@@ -19,7 +19,6 @@
 import copy
 from ikomia import core, dataprocess
 
-import cv2
 import numpy as np
 from yolox.tracker.byte_tracker import BYTETracker
 from argparse import Namespace
@@ -161,23 +160,23 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         dataprocess.CTaskFactory.__init__(self)
         # Set process information as string here
         self.info.name = "infer_bytetrack"
-        self.info.short_description = "your short description"
-        self.info.description = "your description"
+        self.info.short_description = "Infer ByteTrack for object tracking"
+        self.info.description = "Infer ByteTrack for object tracking"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python"
         self.info.version = "1.0.0"
         # self.info.icon_path = "your path to a specific icon"
-        self.info.authors = "algorithm author"
-        self.info.article = "title of associated research article"
-        self.info.journal = "publication journal"
-        self.info.year = 2021
+        self.info.authors = "Zhang, Yifu and Sun, Peize and Jiang, Yi and Yu, Dongdong and Weng, Fucheng and Yuan, Zehuan and Luo, Ping and Liu, Wenyu and Wang, Xinggang"
+        self.info.article = "ByteTrack: Multi-Object Tracking by Associating Every Detection Box"
+        self.info.journal = "Proceedings of the European Conference on Computer Vision (ECCV)"
+        self.info.year = 2022
         self.info.license = "MIT License"
         # URL of documentation
         self.info.documentation_link = ""
         # Code source repository
-        self.info.repository = ""
+        self.info.repository = "https://github.com/ifzhang/ByteTrack"
         # Keywords used for search
-        self.info.keywords = "your,keywords,here"
+        self.info.keywords = "multiple, object, tracking"
 
     def create(self, param=None):
         # Create process object

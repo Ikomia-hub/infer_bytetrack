@@ -40,6 +40,34 @@ class InferBytetrackWidget(core.CWorkflowTaskWidget):
 
         # Create layout : QGridLayout by default
         self.grid_layout = QGridLayout()
+
+        self.conf_thres = 0.25
+        self.track_buffer = 30
+        self.conf_thres_match = 0.7
+
+        self.spin_conf_thres = pyqtutils.append_double_spin(
+                                                self.grid_layout,
+                                                "Confidence threshold",
+                                                self.parameters.conf_thres,
+                                                min=0., max=1.,
+                                                step=0.01, decimals=2
+        )
+
+        self.spin_conf_thres_match = pyqtutils.append_double_spin(
+                                                        self.grid_layout,
+                                                        "Confidence threshold",
+                                                        self.parameters.conf_thres_match,
+                                                        min=0., max=1.,
+                                                        step=0.01, decimals=2
+        )
+
+        self.spin_track_buffer = pyqtutils.append_spin(
+                                                    self.grid_layout,
+                                                    "Track buffer",
+                                                    self.parameters.track_buffer,
+                                                    min=0., max=100
+        )
+
         # PyQt -> Qt wrapping
         layout_ptr = qtconversion.PyQtToQt(self.grid_layout)
 
@@ -48,9 +76,10 @@ class InferBytetrackWidget(core.CWorkflowTaskWidget):
 
     def on_apply(self):
         # Apply button clicked slot
-
-        # Get parameters from widget
-        # Example : self.parameters.windowSize = self.spinWindowSize.value()
+        self.parameters.conf_thres = self.spin_conf_thres.value()
+        self.parameters.conf_thres_match = self.spin_conf_thres_match.value()
+        self.parameters.track_buffer = self.spin_track_buffer.value()
+        self.parameters.update = True
 
         # Send signal to launch the process
         self.emit_apply(self.parameters)

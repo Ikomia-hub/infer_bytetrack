@@ -20,7 +20,7 @@ import copy
 from ikomia import core, dataprocess
 
 import numpy as np
-from yolox.tracker.byte_tracker import BYTETracker
+from infer_bytetrack.yolox.tracker.byte_tracker import BYTETracker
 from argparse import Namespace
 from infer_bytetrack.utils import match_detections_with_tracks, xywh_xyxy
 
@@ -34,7 +34,6 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
     def __init__(self):
         core.CWorkflowTaskParam.__init__(self)
         # Place default value initialization here
-        # Example : self.windowSize = 25
         self.conf_thres = 0.25
         self.track_buffer = 30
         self.conf_thres_match = 0.7
@@ -43,7 +42,6 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
     def set_values(self, param_map):
         # Set parameters values from Ikomia application
         # Parameters values are stored as string and accessible like a python dict
-        # Example : self.windowSize = int(param_map["windowSize"])
         self.update = self.conf_thres != float(param_map["conf_thres"]) or self.track_buffer != int(param_map["track_buffer"]) \
                       or self.conf_thres_match != float(param_map["conf_thres_match"])
         self.conf_thres_match = float(param_map["conf_thres_match"])
@@ -57,7 +55,6 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
         param_map["conf_thres_match"] = str(self.conf_thres_match)
         param_map["conf_thres"] = str(self.conf_thres)
         param_map["track_buffer"] = str(self.track_buffer)
-        # Example : paramMap["windowSize"] = str(self.windowSize)
         return param_map
 
 
@@ -70,8 +67,6 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
     def __init__(self, name, param):
         dataprocess.CObjectDetectionTask.__init__(self, name)
         # Add input/output of the process here
-        # Example :  self.add_input(dataprocess.CImageIO())
-        #           self.add_output(dataprocess.CImageIO())
         self.remove_input(1)
         self.add_input(dataprocess.CObjectDetectionIO())
         self.add_input(dataprocess.CInstanceSegmentationIO())
@@ -105,10 +100,8 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
             args.match_thresh = param.conf_thres_match
             self.tracker = BYTETracker(args)
 
-        # Examples :
         # Get input :
         task_input = self.get_input(0)
-
 
         # Get image from input/output (numpy array):
         src_image = task_input.get_image()
@@ -161,7 +154,6 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         # Set process information as string here
         self.info.name = "infer_bytetrack"
         self.info.short_description = "Infer ByteTrack for object tracking"
-        self.info.description = "Infer ByteTrack for object tracking"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python"
         self.info.version = "1.0.0"
@@ -177,6 +169,8 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.repository = "https://github.com/ifzhang/ByteTrack"
         # Keywords used for search
         self.info.keywords = "multiple, object, tracking"
+        self.info.algo_type = core.AlgoType.INFER
+        self.info.algo_tasks = "OBJECT_TRACKING"
 
     def create(self, param=None):
         # Create process object

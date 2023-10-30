@@ -11,7 +11,8 @@ motmetrics
 filterpy
 h5py
 lap
+ninja
 
-yolox @ git+https://github.com/ifzhang/ByteTrack.git
+# yolox @ git+https://github.com/ifzhang/ByteTrack.git
 pycocotools
 # git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI

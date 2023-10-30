@@ -116,11 +116,11 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
             task_output = self.get_output(1)
             task_output.init("ByteTrack", 0)
             tracks = self.tracker.update(np.array([xywh_xyxy(o.box) + [o.confidence] for o in dets]), img_size, img_size)
-
-            pairings = match_detections_with_tracks(dets, tracks)
-            for k, v in pairings.items():
-                det = dets[k]
-                task_output.add_object(v, det.label, det.confidence, *det.box, det.color)
+            if len(tracks) > 0:
+                pairings = match_detections_with_tracks(dets, tracks)
+                for k, v in pairings.items():
+                    det = dets[k]
+                    task_output.add_object(v, det.label, det.confidence, *det.box, det.color)
         elif len(inst_segs):
             self.set_output(dataprocess.CInstanceSegmentationIO(), 1)
             # Get output :

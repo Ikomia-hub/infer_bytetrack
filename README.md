@@ -66,8 +66,8 @@ while True:
     obj_detect_out = tracking.get_output(1)
 
     # Display
-    img_res = cv2.cvtColor(image_out.get_image_with_mask_and_graphics(obj_detect_out), cv2.COLOR_BGR2RGB)
-    display(img_res, title="YOLOv7 - ByteTrack", viewer="opencv")
+    img_res = cv2.cvtColor(image_out.get_image_with_graphics(obj_detect_out), cv2.COLOR_BGR2RGB)
+    display(img_res, title="ByteTrack", viewer="opencv")
 
     # Press 'q' to quit the streaming process
     if cv2.waitKey(1) & 0xFF == ord('q'):

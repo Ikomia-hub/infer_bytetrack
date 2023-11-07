@@ -55,7 +55,7 @@ class InferBytetrackWidget(core.CWorkflowTaskWidget):
 
         self.spin_conf_thres_match = pyqtutils.append_double_spin(
                                                         self.grid_layout,
-                                                        "Confidence threshold",
+                                                        "Match confidence threshold",
                                                         self.parameters.conf_thres_match,
                                                         min=0., max=1.,
                                                         step=0.01, decimals=2

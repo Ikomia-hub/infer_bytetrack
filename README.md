@@ -46,7 +46,7 @@ wf = Workflow()
 # Add object detection algorithm
 detector = wf.add_task(name="infer_yolo_v7", auto_connect=True)
 
-# Add DeepSORT tracking algorithm
+# Add ByteTrack tracking algorithm
 tracking = wf.add_task(name="infer_bytetrack", auto_connect=True)
 
 stream = cv2.VideoCapture(0)

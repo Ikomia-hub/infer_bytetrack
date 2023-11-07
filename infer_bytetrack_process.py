@@ -158,7 +158,9 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.path = "Plugins/Python"
         self.info.version = "1.0.0"
         # self.info.icon_path = "your path to a specific icon"
-        self.info.authors = "Zhang, Yifu and Sun, Peize and Jiang, Yi and Yu, Dongdong and Weng, Fucheng and Yuan, Zehuan and Luo, Ping and Liu, Wenyu and Wang, Xinggang"
+        self.info.authors = "Zhang, Yifu and Sun, Peize and Jiang, Yi and Yu, "\
+                            "Dongdong and Weng, Fucheng and Yuan, Zehuan and Luo, " \
+                            "Ping and Liu, Wenyu and Wang, Xinggang"
         self.info.article = "ByteTrack: Multi-Object Tracking by Associating Every Detection Box"
         self.info.journal = "Proceedings of the European Conference on Computer Vision (ECCV)"
         self.info.year = 2022
@@ -166,7 +168,8 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         # URL of documentation
         self.info.documentation_link = ""
         # Code source repository
-        self.info.repository = "https://github.com/ifzhang/ByteTrack"
+        self.info.repository = "https://github.com/Ikomia-hub/infer_bytetrack"
+        self.info.original_repository = "https://github.com/ifzhang/ByteTrack"
         # Keywords used for search
         self.info.keywords = "multiple, object, tracking"
         self.info.algo_type = core.AlgoType.INFER

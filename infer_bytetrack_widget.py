@@ -41,9 +41,8 @@ class InferBytetrackWidget(core.CWorkflowTaskWidget):
         # Create layout : QGridLayout by default
         self.grid_layout = QGridLayout()
 
-        self.conf_thres = 0.25
-        self.track_buffer = 30
-        self.conf_thres_match = 0.7
+        self.edit_categories = pyqtutils.append_edit(self.grid_layout, "Categories", self.parameters.categories)
+
 
         self.spin_conf_thres = pyqtutils.append_double_spin(
                                                 self.grid_layout,
@@ -77,6 +76,7 @@ class InferBytetrackWidget(core.CWorkflowTaskWidget):
     def on_apply(self):
         # Apply button clicked slot
         self.parameters.conf_thres = self.spin_conf_thres.value()
+        self.parameters.categories = self.edit_categories.text()
         self.parameters.conf_thres_match = self.spin_conf_thres_match.value()
         self.parameters.track_buffer = self.spin_track_buffer.value()
         self.parameters.update = True

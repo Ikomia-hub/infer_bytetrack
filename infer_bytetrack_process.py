@@ -38,6 +38,7 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
         self.track_buffer = 30
         self.conf_thres_match = 0.7
         self.update = True
+        self.categories = "all"
 
     def set_values(self, param_map):
         # Set parameters values from Ikomia application
@@ -47,6 +48,7 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
         self.conf_thres_match = float(param_map["conf_thres_match"])
         self.conf_thres = float(param_map["conf_thres"])
         self.track_buffer = int(param_map["track_buffer"])
+        self.categories = str(param_map["all"])
 
     def get_values(self):
         # Send parameters values to Ikomia application
@@ -55,6 +57,8 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
         param_map["conf_thres_match"] = str(self.conf_thres_match)
         param_map["conf_thres"] = str(self.conf_thres)
         param_map["track_buffer"] = str(self.track_buffer)
+        param_map["categories"] = str(self.categories)
+
         return param_map
 
 
@@ -78,6 +82,15 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
             self.set_param_object(InferBytetrackParam())
         else:
             self.set_param_object(copy.deepcopy(param))
+
+        self.palette = (2 ** 11 - 1, 2 ** 15 - 1, 2 ** 20 - 1)
+
+    def compute_color_for_labels(self, label):
+        """
+        Simple function that adds fixed color depending on the class
+        """
+        color = [int((p * (label ** 2 - label + 1)) % 255) for p in self.palette]
+        return color
 
     def get_progress_steps(self):
         # Function returning the number of progress steps for this process
@@ -105,22 +118,34 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
 
         # Get image from input/output (numpy array):
         src_image = task_input.get_image()
-
         img_size = np.shape(src_image)
+
+        # Get object input
         dets = self.get_input(1).get_objects()
         inst_segs = self.get_input(2).get_objects()
 
+        # Get label input
+        input_categories = param.categories.replace(", ", ",")
+        labels_to_track = input_categories.split(',')
+
+        # Tracking for object detection input
         if len(dets):
             self.set_output(dataprocess.CObjectDetectionIO(), 1)
             # Get output :
             task_output = self.get_output(1)
             task_output.init("ByteTrack", 0)
             tracks = self.tracker.update(np.array([xywh_xyxy(o.box) + [o.confidence] for o in dets]), img_size, img_size)
+
             if len(tracks) > 0:
                 pairings = match_detections_with_tracks(dets, tracks)
                 for k, v in pairings.items():
                     det = dets[k]
-                    task_output.add_object(v, det.label, det.confidence, *det.box, det.color)
+                    if param.categories == "all" or det.label in labels_to_track:
+                        print(det.label)
+                        color = self.compute_color_for_labels(v)
+                        task_output.add_object(v, det.label, det.confidence, *det.box, color)
+
+        # Tracking for instance segmentation input
         elif len(inst_segs):
             self.set_output(dataprocess.CInstanceSegmentationIO(), 1)
             # Get output :
@@ -128,13 +153,15 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
             task_output.init("ByteTrack", 0, img_size[1], img_size[0])
             tracks = self.tracker.update(np.array([xywh_xyxy(o.box) + [o.confidence] for o in inst_segs]), img_size,
                                          img_size)
+            if len(tracks) > 0:
+                pairings = match_detections_with_tracks(inst_segs, tracks)
+                for k, v in pairings.items():
+                    inst_seg = inst_segs[k]
+                    if param.categories == "all" or det.label in labels_to_track:
+                        color = self.compute_color_for_labels(v)
+                        task_output.add_object(v, 0, 0, inst_seg.label, inst_seg.confidence, *inst_seg.box, inst_seg.mask, color)
 
-            pairings = match_detections_with_tracks(inst_segs, tracks)
-            for k, v in pairings.items():
-                inst_seg = inst_segs[k]
-                task_output.add_object(v, 0, 0, inst_seg.label, inst_seg.confidence, *inst_seg.box, inst_seg.mask, inst_seg.color)
-
-            self.set_output_color_map(0, 1, [[128, 128, 128]], True)
+                # self.set_output_color_map(0, 1, [[128, 128, 128]], True)
 
         # Step progress bar (Ikomia Studio):
         self.emit_step_progress()
@@ -166,7 +193,7 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.year = 2022
         self.info.license = "MIT License"
         # URL of documentation
-        self.info.documentation_link = ""
+        self.info.documentation_link = "https://arxiv.org/abs/2110.06864"
         # Code source repository
         self.info.repository = "https://github.com/Ikomia-hub/infer_bytetrack"
         self.info.original_repository = "https://github.com/ifzhang/ByteTrack"

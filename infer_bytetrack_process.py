@@ -83,6 +83,7 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
             self.set_param_object(copy.deepcopy(param))
 
         self.palette = (2 ** 11 - 1, 2 ** 15 - 1, 2 ** 20 - 1)
+        self.categories = None
 
     def compute_color_for_labels(self, label):
         """
@@ -124,8 +125,10 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
         inst_segs = self.get_input(2).get_objects()
 
         # Get label input
-        input_categories = param.categories.replace(", ", ",")
-        labels_to_track = input_categories.split(',')
+        self.categories = param.categories
+        while ', ' in self.categories:
+            self.categories = self.categories.replace(", ", ",")
+        labels_to_track = self.categories.split(',')
 
         # Tracking for object detection input
         if len(dets):
@@ -138,7 +141,6 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
                                     img_size,
                                     img_size
             )
-
             if len(tracks) > 0:
                 pairings = match_detections_with_tracks(dets, tracks)
                 for k, v in pairings.items():
@@ -174,7 +176,6 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
                                             inst_seg.mask,
                                             color
                         )
-                    
 
         # Step progress bar (Ikomia Studio):
         self.emit_step_progress()

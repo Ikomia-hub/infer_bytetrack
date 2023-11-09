@@ -89,7 +89,8 @@ Ikomia Studio offers a friendly UI with the same features as the API.
 
 ## :pencil: Set algorithm parameters
 
-- **conf_thres** (float) - Default '0.25': Confidence threshold
+- **categories** (str) - Default 'all': Categories of objects you want to track. Use a comma separated string to set multiple categories (ex: "dog,person,car").
+- **conf_thres** (float) - Default '0.25': Object detection confidence threshold
 - **conf_thres_match** (float) - Default '0.7': Threshold for considering an assignment valid.
 - **track_buffer** (int) - Default '30': Buffer size.
 

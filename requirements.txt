@@ -1,7 +1,9 @@
 # cython_bbox
-git+https://github.com/samson-wang/cython_bbox.git#egg=cython-bbox
+# git+https://github.com/samson-wang/cython_bbox.git#egg=cython-bbox # official repo uses deprecated np.float
+git+https://github.com/Keval-WOT/cython_bbox.git#egg=cython-bbox
+
 onemetric
-numpy<=1.23.5
+numpy
 loguru
 scikit-image
 tqdm

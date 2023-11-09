@@ -1,7 +1,7 @@
 # cython_bbox
 git+https://github.com/samson-wang/cython_bbox.git#egg=cython-bbox
 onemetric
-
+numpy<=1.23.5
 loguru
 scikit-image
 tqdm

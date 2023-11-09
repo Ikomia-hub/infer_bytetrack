@@ -47,7 +47,7 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
         self.conf_thres_match = float(param_map["conf_thres_match"])
         self.conf_thres = float(param_map["conf_thres"])
         self.track_buffer = int(param_map["track_buffer"])
-        self.categories = str(param_map["all"])
+        self.categories = str(param_map["categories"])
 
     def get_values(self):
         # Send parameters values to Ikomia application

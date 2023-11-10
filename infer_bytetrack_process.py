@@ -52,12 +52,12 @@ class InferBytetrackParam(core.CWorkflowTaskParam):
     def get_values(self):
         # Send parameters values to Ikomia application
         # Create the specific dict structure (string container)
-        param_map = {}
-        param_map["conf_thres_match"] = str(self.conf_thres_match)
-        param_map["conf_thres"] = str(self.conf_thres)
-        param_map["track_buffer"] = str(self.track_buffer)
-        param_map["categories"] = str(self.categories)
-
+        param_map = {
+            "conf_thres_match": str(self.conf_thres_match),
+            "conf_thres": str(self.conf_thres),
+            "track_buffer": str(self.track_buffer),
+            "categories": str(self.categories)
+        }
         return param_map
 
 
@@ -196,7 +196,7 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.name = "infer_bytetrack"
         self.info.short_description = "Infer ByteTrack for object tracking"
         # relative path -> as displayed in Ikomia application process tree
-        self.info.path = "Plugins/Python"
+        self.info.path = "Plugins/Python/Tracking"
         self.info.version = "1.0.0"
         # self.info.icon_path = "your path to a specific icon"
         self.info.authors = "Zhang, Yifu and Sun, Peize and Jiang, Yi and Yu, "\
@@ -212,7 +212,7 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.repository = "https://github.com/Ikomia-hub/infer_bytetrack"
         self.info.original_repository = "https://github.com/ifzhang/ByteTrack"
         # Keywords used for search
-        self.info.keywords = "multiple, object, tracking"
+        self.info.keywords = "multiple, object, tracking, kalman"
         self.info.algo_type = core.AlgoType.INFER
         self.info.algo_tasks = "OBJECT_TRACKING"
 

@@ -12,7 +12,7 @@ tabulate
 motmetrics
 filterpy
 h5py
-lap
+git+https://github.com/gatagat/lap.git
 ninja
 
 # yolox @ git+https://github.com/ifzhang/ByteTrack.git

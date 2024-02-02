@@ -197,7 +197,7 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.short_description = "Infer ByteTrack for object tracking"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python/Tracking"
-        self.info.version = "1.0.0"
+        self.info.version = "1.0.1"
         self.info.icon_path = "icons/logo.png"
         self.info.authors = "Zhang, Yifu and Sun, Peize and Jiang, Yi and Yu, "\
                             "Dongdong and Weng, Fucheng and Yuan, Zehuan and Luo, " \

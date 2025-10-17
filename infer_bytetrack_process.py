@@ -105,7 +105,7 @@ class InferBytetrack(dataprocess.CObjectDetectionTask):
         # Get parameters :
         param = self.get_param_object()
 
-        if self.tracker is None:
+        if self.tracker is None or param.update:
             args = Namespace()
             args.track_thresh = param.conf_thres
             args.track_buffer = param.track_buffer
@@ -197,7 +197,8 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.short_description = "Infer ByteTrack for object tracking"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python/Tracking"
-        self.info.version = "1.0.1"
+        self.info.version = "1.1.0"
+        self.min_ikomia_version = "0.15.0"
         self.info.icon_path = "icons/logo.png"
         self.info.authors = "Zhang, Yifu and Sun, Peize and Jiang, Yi and Yu, "\
                             "Dongdong and Weng, Fucheng and Yuan, Zehuan and Luo, " \
@@ -215,6 +216,11 @@ class InferBytetrackFactory(dataprocess.CTaskFactory):
         self.info.keywords = "multiple, object, tracking, kalman"
         self.info.algo_type = core.AlgoType.INFER
         self.info.algo_tasks = "OBJECT_TRACKING"
+        # Min hardware config
+        self.info.hardware_config.min_cpu = 4
+        self.info.hardware_config.min_ram = 16
+        self.info.hardware_config.gpu_required = False
+        self.info.hardware_config.min_vram = 6
 
     def create(self, param=None):
         # Create process object

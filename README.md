@@ -21,7 +21,7 @@
 
 Multiple object tracking algorithm for object detection using ByteTrack.
 
-![Example git](https://github.com/ifzhang/ByteTrack/blob/main/assets/MOT17-07-SDP.gif?raw=true)
+![Example git](https://raw.githubusercontent.com/ifzhang/ByteTrack/refs/heads/main/assets/MOT17-07-SDP.gif)
 
 ## :rocket: Use with Ikomia API
 
